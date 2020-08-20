@@ -2,23 +2,29 @@ const setupDiv = document.getElementById("setup");
 const punchlineDiv = document.getElementById("punchline");
 const punchlineBtn = document.getElementById("punchlineBtn");
 const newJokeBtn = document.getElementById("newJokeBtn");
+let punchline;
 
-// Setup an async function called getJoke
-// Create a variable called jokePromise that fetches a joke
-//from https://official-joke-api.appspot.com/jokes/programming/random
-// create a variable called joke that consumes the json data
+punchlineBtn.addEventListener("click", getPunchline);
+
+function getPunchline() {
+  punchlineDiv.innerHTML = punchline;
+  punchlineDiv.classList.add("bubble");
+  punchlineBtn.classList.toggle("hidden");
+  newJokeBtn.classList.toggle("hidden");
+}
 
 async function getJoke() {
   const jokePromise = await fetch(
     "https://official-joke-api.appspot.com/jokes/programming/random"
   );
   const joke = await jokePromise.json();
-  // Get the setup from the joke and insert it into the setupDiv element
-  joke.forEach((joke) => {
-    //const div = document.createElement("div");
-    setupDiv.innerHTML = joke.setup;
-    //document.body.appendChild(div);
-  });
+
+  setupDiv.innerHTML = joke[0].setup;
+
+  punchline = joke[0].punchline;
+
+  punchlineBtn.classList.toggle("hidden");
+  newJokeBtn.classList.toggle("hidden");
 }
 
 getJoke();
